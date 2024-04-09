@@ -33,8 +33,15 @@ export const authOptions = {
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
       authorization: LOGIN_URL,
+      profile(profile) {
+        return {
+            id: profile.id,
+            name: profile.display_name,
+            email: profile.email,
+            image: profile.images?.[0]?.url,
+        }
+      }
     }),
-    // ...add more providers here
   ],
   secret: process.env.JWT_SECRET,
   pages: {
