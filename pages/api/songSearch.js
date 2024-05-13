@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       // Authenticate with Spotify
       const data = await spotifyApi.clientCredentialsGrant();
       spotifyApi.setAccessToken(data.body['access_token']);
-
+      console.log(data)
       // Extract the search query from the request query parameters
       const { query } = req.query;
 

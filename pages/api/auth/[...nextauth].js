@@ -5,15 +5,15 @@ import spotifyApi, { LOGIN_URL } from "../../../lib/spotify";
 async function refreshAccessToken(token) {
   try {
     spotifyApi.setAccessToken(token.accessToken);
-    spotifyApi.setRefreshToken(token.refreshAccessToken);
+    spotifyApi.setRefreshToken(token.refreshToken);
 
     const { body: refreshedToken } = await spotifyApi.refreshAccessToken();
     console.log("REFRESHED TOKEN IS", refreshedToken);
 
     return {
       ...token,
-      accessToken: refreshAccessToken.access_token,
-      accessTokenExpires: Date.now + refreshAccessToken.expires_in * 1000,
+      accessToken: refreshedToken.access_token,
+      accessTokenExpires: Date.now() + refreshedToken.expires_in * 1000,
       spotifyApi,
       refreshToken: refreshedToken.refresh_token ?? token.refreshToken,
     };
@@ -49,35 +49,33 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, account, user }) {
-      //on initial signin
+      // On initial signin
       if (account && user) {
         return {
           ...token,
           accessToken: account.access_token,
-          refreshToken: account.refreshToken,
+          refreshToken: account.refresh_token,
           username: account.providerAccountId,
-          accessTokenExpires: account.expires_at * 1000, //handle expiry times in milliseconds
+          accessTokenExpires: account.expires_at * 1000, // handle expiry times in milliseconds
         };
       }
 
-      //if access token isn't expired
+      // If access token isn't expired
       if (Date.now() < token.accessTokenExpires) {
         console.log("EXISTING TOKEN IS VALID");
         return token;
       }
 
-      //access token has expired, we refresh the token
+      // Access token has expired, we refresh the token
       console.log("ACCESS TOKEN HAS EXPIRED, REFRESHING...");
       return await refreshAccessToken(token);
     },
-  },
-
-  async session({ session, token }) {
-    session.user.accessToken = token.accessToken;
-    session.user.refreshToken = token.refreshToken;
-    session.user.username = token.username;
-
-    return session;
+    async session({ session, token }) {
+      session.accessToken = token.accessToken;
+      session.refreshToken = token.refreshToken;
+      session.username = token.username;
+      return session;
+    },
   },
 };
 
