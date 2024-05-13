@@ -8,7 +8,7 @@ const sidebar = (props) => {
           <ul className="mt-6">
             <li className="py-2">
               <div
-                className="flex items-center"
+                className="flex items-center hover:cursor-pointer"
                 onClick={() => props.onSidebarItemClick("home")}
               >
                 Home
@@ -16,15 +16,15 @@ const sidebar = (props) => {
             </li>
             <li className="py-2">
               <div
-                className="flex items-center"
+                className="flex items-center hover:cursor-pointer"
                 onClick={() => props.onSidebarItemClick("playlists")}
               >
-                My Playlists
+                Playlists
               </div>
             </li>
             <li className="py-2">
               <div
-                className="flex items-center"
+                className="flex items-center hover:cursor-pointer"
                 onClick={() => props.onSidebarItemClick("createPlaylist")}
               >
                 Create Playlist

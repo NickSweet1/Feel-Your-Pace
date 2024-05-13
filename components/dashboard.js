@@ -17,16 +17,21 @@ const Dashboard = () => {
         return <MyPlaylists />;
       case "createPlaylist":
         return <CreatePlaylist />;
-      default: 
-        return <div>Welcome to your homepage! Use the side bar to navigate around and start making some playlists for your workout!</div>;
+      default:
+        return (
+          <div>
+            Welcome to your homepage! Use the side bar to navigate around and
+            start making some playlists for your workout!
+          </div>
+        );
     }
-  }
+  };
   return (
     <div>
       <Navbar />
-      <div className="flex">
-        <Sidebar onSidebarItemClick={handleSidebarItemClick}/>
-        <div>{componentToRender()}</div> {/* Corrected call to the function */}
+      <div className="flex h-screen">
+        <Sidebar onSidebarItemClick={handleSidebarItemClick} />
+        <div className="flex-grow">{componentToRender()}</div>
       </div>
     </div>
   );
